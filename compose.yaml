@@ -1,0 +1,27 @@
+services:
+  http-server:
+    container_name: http-server-korp
+    build: ./http-server-projeto-korp
+    networks:
+      - projkorpnet
+
+  nginx:
+    container_name: nginx-proxy
+    build: ./nginx
+    ports:
+      - 80:80
+    volumes:
+      - nginx-config:/etc/nginx/conf.d/
+    networks:
+      - projkorpnet
+    depends_on:
+      - http-server
+    
+volumes:
+  nginx-config:
+
+networks:
+  projkorpnet:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
