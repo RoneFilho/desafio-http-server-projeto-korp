@@ -16,12 +16,33 @@ services:
       - projkorpnet
     depends_on:
       - http-server
-    
+  
+  prometheus:
+    container_name: prom-metrics
+    build: ./prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - prom-config:/etc/prometheus/
+    networks:
+      - projkorpnet
+    depends_on:
+      - nginx
+
+  grafana:
+    container_name: grafana-dash
+    build: ./grafana
+    ports:
+      - 3000:3000
+    networks:
+      - projkorpnet
+    depends_on:
+      - prometheus
+
 volumes:
   nginx-config:
+  prom-config:
 
 networks:
   projkorpnet:
     driver: bridge
-    driver_opts:
-      com.docker.network.bridge.host_binding_ipv4: "127.0.0.1"
