@@ -16,6 +16,15 @@ ansible-playbook playbook.yml
 O playbook cuidará da instalação do docker e docker compose, subirá todos os containers (Http-server, Nginx, Prometheus e Grafana), irá configurar automaticamente o Grafana com o Datasource e Dashboard. 
 No final irá retornar o conteúdo JSON da requisição Curl feita para http://localhost/projeto-korp
 
+As aplicações estão nas seguintes portas:
+localhost:80/project-korp (http-server)
+localhost:9090 (Prometheus)
+localhost:3000 (Grafana)
+
+Para acessar o grafana basta usar: 
+login: admin 
+senha: admin
+
 ## Contato:
 
 Atualmente estou aberto para oportunidades como DevOps e Desenvolvedor Backend focado em Python, C# e Java!
