@@ -66,11 +66,18 @@ func getProjetoKorp(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, horario)
 }
 
+func getHealth(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, gin.H{
+		"message": "Up and running!",
+	})
+}
+
 func main() {
 	router := gin.Default()
 	router.Use(RequestMetricsMiddleware())
 	router.GET("/metrics", PrometheusHandler())
 	router.GET("/projeto-korp", getProjetoKorp)
+	router.GET("/health", getHealth)
 
 	router.Run("0.0.0.0:8080")
 }

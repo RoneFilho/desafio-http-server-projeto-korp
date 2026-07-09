@@ -4,21 +4,25 @@
     "metadata": {
         "name": "ad4kwvc",
         "namespace": "default",
-        "uid": "dc8b047f-f1a6-4eb3-ade8-fc0eb4cb32b9",
-        "resourceVersion": "1783537046522002",
-        "generation": 1,
-        "creationTimestamp": "2026-07-08T18:57:26Z",
+        "uid": "a282c23d-8ad2-4db1-b62c-76681bf32a01",
+        "resourceVersion": "1783628884150001",
+        "generation": 4,
+        "creationTimestamp": "2026-07-09T20:25:36Z",
         "labels": {
-            "grafana.app/deprecatedInternalID": "3275050239393792"
+            "grafana.app/deprecatedInternalID": "3659627608838144"
         },
         "annotations": {
             "grafana.app/createdBy": "access-policy:service",
+            "grafana.app/folder": "",
             "grafana.app/managedBy": "classic-file-provisioning",
+            "grafana.app/managerAllowsEdits": "true",
             "grafana.app/managerId": "default",
-            "grafana.app/sourceChecksum": "067eba50be66ee14a56d4e8cddb6c981",
+            "grafana.app/saved-from-ui": "Grafana v13.1.0 (b309c9bb3b)",
+            "grafana.app/sourceChecksum": "1ff8f585e6a21ff8855f847779f8e3e0",
             "grafana.app/sourcePath": "/etc/grafana/provisioning/dashboards/http-server-projeto-korp-dashboard.json",
-            "grafana.app/sourceTimestamp": "1783536944000",
-            "grafana.app/folder": ""
+            "grafana.app/sourceTimestamp": "1783539003000",
+            "grafana.app/updatedBy": "user:afrmdxfk9answa",
+            "grafana.app/updatedTimestamp": "2026-07-09T20:28:04Z"
         }
     },
     "spec": {
@@ -26,20 +30,20 @@
             {
                 "kind": "AnnotationQuery",
                 "spec": {
-                    "builtIn": true,
+                    "query": {
+                        "kind": "DataQuery",
+                        "group": "grafana",
+                        "version": "v0",
+                        "datasource": {
+                            "name": "-- Grafana --"
+                        },
+                        "spec": {}
+                    },
                     "enable": true,
                     "hide": true,
                     "iconColor": "rgba(0, 211, 255, 1)",
                     "name": "Annotations & Alerts",
-                    "query": {
-                        "datasource": {
-                            "name": "-- Grafana --"
-                        },
-                        "group": "grafana",
-                        "kind": "DataQuery",
-                        "spec": {},
-                        "version": "v0"
-                    }
+                    "builtIn": true
                 }
             }
         ],
@@ -49,6 +53,10 @@
             "panel-1": {
                 "kind": "Panel",
                 "spec": {
+                    "id": 1,
+                    "title": "Requisições http-server",
+                    "description": "",
+                    "links": [],
                     "data": {
                         "kind": "QueryGroup",
                         "spec": {
@@ -56,54 +64,34 @@
                                 {
                                     "kind": "PanelQuery",
                                     "spec": {
-                                        "hidden": false,
                                         "query": {
+                                            "kind": "DataQuery",
+                                            "group": "prometheus",
+                                            "version": "v0",
                                             "datasource": {
                                                 "name": "PBFA97CFB590B2093"
                                             },
-                                            "group": "prometheus",
-                                            "kind": "DataQuery",
                                             "spec": {
                                                 "editorMode": "builder",
-                                                "expr": "api_http_request_total{instance=\"http-server-korp:8080\"}",
+                                                "expr": "api_http_request_total{path!=\"/health\"}",
                                                 "legendFormat": "{{path}}",
                                                 "range": true
-                                            },
-                                            "version": "v0"
+                                            }
                                         },
-                                        "refId": "A"
+                                        "refId": "A",
+                                        "hidden": false
                                     }
                                 }
                             ],
-                            "queryOptions": {},
-                            "transformations": []
+                            "transformations": [],
+                            "queryOptions": {}
                         }
                     },
-                    "description": "",
-                    "id": 1,
-                    "links": [],
-                    "title": "Requisições http-server",
                     "vizConfig": {
-                        "group": "stat",
                         "kind": "VizConfig",
+                        "group": "stat",
+                        "version": "13.1.0",
                         "spec": {
-                            "fieldConfig": {
-                                "defaults": {
-                                    "color": {
-                                        "mode": "thresholds"
-                                    },
-                                    "thresholds": {
-                                        "mode": "absolute",
-                                        "steps": [
-                                            {
-                                                "color": "green",
-                                                "value": 0
-                                            }
-                                        ]
-                                    }
-                                },
-                                "overrides": []
-                            },
                             "options": {
                                 "colorMode": "value",
                                 "graphMode": "area",
@@ -120,15 +108,35 @@
                                 "showPercentChange": false,
                                 "textMode": "auto",
                                 "wideLayout": true
+                            },
+                            "fieldConfig": {
+                                "defaults": {
+                                    "thresholds": {
+                                        "mode": "absolute",
+                                        "steps": [
+                                            {
+                                                "value": 0,
+                                                "color": "green"
+                                            }
+                                        ]
+                                    },
+                                    "color": {
+                                        "mode": "thresholds"
+                                    }
+                                },
+                                "overrides": []
                             }
-                        },
-                        "version": "13.1.0"
+                        }
                     }
                 }
             },
             "panel-2": {
                 "kind": "Panel",
                 "spec": {
+                    "id": 2,
+                    "title": "Disponibilidade Containers",
+                    "description": "",
+                    "links": [],
                     "data": {
                         "kind": "QueryGroup",
                         "spec": {
@@ -136,55 +144,35 @@
                                 {
                                     "kind": "PanelQuery",
                                     "spec": {
-                                        "hidden": false,
                                         "query": {
+                                            "kind": "DataQuery",
+                                            "group": "prometheus",
+                                            "version": "v0",
                                             "datasource": {
                                                 "name": "PBFA97CFB590B2093"
                                             },
-                                            "group": "prometheus",
-                                            "kind": "DataQuery",
                                             "spec": {
                                                 "editorMode": "builder",
                                                 "expr": "engine_daemon_container_states_containers{job=\"Docker\"}",
                                                 "interval": "",
                                                 "legendFormat": "{{state}}",
                                                 "range": true
-                                            },
-                                            "version": "v0"
+                                            }
                                         },
-                                        "refId": "A"
+                                        "refId": "A",
+                                        "hidden": false
                                     }
                                 }
                             ],
-                            "queryOptions": {},
-                            "transformations": []
+                            "transformations": [],
+                            "queryOptions": {}
                         }
                     },
-                    "description": "",
-                    "id": 2,
-                    "links": [],
-                    "title": "Disponibilidade Containers",
                     "vizConfig": {
-                        "group": "stat",
                         "kind": "VizConfig",
+                        "group": "stat",
+                        "version": "13.1.0",
                         "spec": {
-                            "fieldConfig": {
-                                "defaults": {
-                                    "color": {
-                                        "mode": "thresholds"
-                                    },
-                                    "thresholds": {
-                                        "mode": "absolute",
-                                        "steps": [
-                                            {
-                                                "color": "green",
-                                                "value": 0
-                                            }
-                                        ]
-                                    }
-                                },
-                                "overrides": []
-                            },
                             "options": {
                                 "colorMode": "background",
                                 "graphMode": "none",
@@ -201,9 +189,145 @@
                                 "showPercentChange": false,
                                 "textMode": "auto",
                                 "wideLayout": true
+                            },
+                            "fieldConfig": {
+                                "defaults": {
+                                    "thresholds": {
+                                        "mode": "absolute",
+                                        "steps": [
+                                            {
+                                                "value": 0,
+                                                "color": "green"
+                                            }
+                                        ]
+                                    },
+                                    "color": {
+                                        "mode": "thresholds"
+                                    }
+                                },
+                                "overrides": []
                             }
-                        },
-                        "version": "13.1.0"
+                        }
+                    }
+                }
+            },
+            "panel-3": {
+                "kind": "Panel",
+                "spec": {
+                    "id": 3,
+                    "title": "Health Check",
+                    "description": "",
+                    "links": [],
+                    "data": {
+                        "kind": "QueryGroup",
+                        "spec": {
+                            "queries": [
+                                {
+                                    "kind": "PanelQuery",
+                                    "spec": {
+                                        "query": {
+                                            "kind": "DataQuery",
+                                            "group": "prometheus",
+                                            "version": "v0",
+                                            "datasource": {
+                                                "name": "PBFA97CFB590B2093"
+                                            },
+                                            "spec": {
+                                                "editorMode": "builder",
+                                                "expr": "api_http_request_total{path=\"/health\"}",
+                                                "legendFormat": "{{path}}",
+                                                "range": true
+                                            }
+                                        },
+                                        "refId": "A",
+                                        "hidden": false
+                                    }
+                                }
+                            ],
+                            "transformations": [],
+                            "queryOptions": {}
+                        }
+                    },
+                    "vizConfig": {
+                        "kind": "VizConfig",
+                        "group": "timeseries",
+                        "version": "13.1.0",
+                        "spec": {
+                            "options": {
+                                "annotations": {
+                                    "clustering": -1,
+                                    "multiLane": false
+                                },
+                                "legend": {
+                                    "calcs": [],
+                                    "displayMode": "list",
+                                    "enableFacetedFilter": false,
+                                    "overflow": "ellipsis",
+                                    "placement": "bottom",
+                                    "showLegend": true
+                                },
+                                "tooltip": {
+                                    "hideZeros": false,
+                                    "mode": "single",
+                                    "sort": "none"
+                                }
+                            },
+                            "fieldConfig": {
+                                "defaults": {
+                                    "thresholds": {
+                                        "mode": "absolute",
+                                        "steps": [
+                                            {
+                                                "value": 0,
+                                                "color": "green"
+                                            },
+                                            {
+                                                "value": 80,
+                                                "color": "red"
+                                            }
+                                        ]
+                                    },
+                                    "color": {
+                                        "mode": "palette-classic"
+                                    },
+                                    "custom": {
+                                        "axisBorderShow": false,
+                                        "axisCenteredZero": false,
+                                        "axisColorMode": "text",
+                                        "axisLabel": "",
+                                        "axisPlacement": "auto",
+                                        "barAlignment": 0,
+                                        "barWidthFactor": 0.6,
+                                        "drawStyle": "line",
+                                        "fillOpacity": 0,
+                                        "gradientMode": "none",
+                                        "hideFrom": {
+                                            "legend": false,
+                                            "tooltip": false,
+                                            "viz": false
+                                        },
+                                        "insertNulls": false,
+                                        "lineInterpolation": "linear",
+                                        "lineWidth": 1,
+                                        "pointSize": 5,
+                                        "scaleDistribution": {
+                                            "type": "linear"
+                                        },
+                                        "showPoints": "auto",
+                                        "showValues": false,
+                                        "spanNulls": false,
+                                        "stacking": {
+                                            "group": "A",
+                                            "mode": "none"
+                                        },
+                                        "thresholdsStyle": {
+                                            "mode": "off"
+                                        }
+                                    }
+                                },
+                                "overrides": []
+                            }
+                        }
                     }
                 }
             }
@@ -215,27 +339,40 @@
                     {
                         "kind": "GridLayoutItem",
                         "spec": {
+                            "x": 0,
+                            "y": 0,
+                            "width": 24,
+                            "height": 9,
                             "element": {
                                 "kind": "ElementReference",
                                 "name": "panel-1"
-                            },
-                            "height": 9,
-                            "width": 24,
-                            "x": 0,
-                            "y": 0
+                            }
                         }
                     },
                     {
                         "kind": "GridLayoutItem",
                         "spec": {
+                            "x": 0,
+                            "y": 9,
+                            "width": 24,
+                            "height": 8,
+                            "element": {
+                                "kind": "ElementReference",
+                                "name": "panel-3"
+                            }
+                        }
+                    },
+                    {
+                        "kind": "GridLayoutItem",
+                        "spec": {
+                            "x": 0,
+                            "y": 17,
+                            "width": 24,
+                            "height": 8,
                             "element": {
                                 "kind": "ElementReference",
                                 "name": "panel-2"
-                            },
-                            "height": 8,
-                            "width": 24,
-                            "x": 0,
-                            "y": 9
+                            }
                         }
                     }
                 ]
@@ -243,17 +380,12 @@
         },
         "links": [],
         "liveNow": false,
-        "preferences": {
-            "layout": {
-                "kind": "GridLayout",
-                "spec": {
-                    "items": []
-                }
-            }
-        },
         "preload": false,
         "tags": [],
         "timeSettings": {
+            "timezone": "browser",
+            "from": "now-6h",
+            "to": "now",
             "autoRefresh": "5s",
             "autoRefreshIntervals": [
                 "5s",
@@ -267,13 +399,18 @@
                 "2h",
                 "1d"
             ],
-            "fiscalYearStartMonth": 0,
-            "from": "now-6h",
             "hideTimepicker": false,
-            "timezone": "browser",
-            "to": "now"
+            "fiscalYearStartMonth": 0
         },
         "title": "http-server-projeto-korp-dashboard",
-        "variables": []
+        "variables": [],
+        "preferences": {
+            "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                    "items": []
+                }
+            }
+        }
     }
 }

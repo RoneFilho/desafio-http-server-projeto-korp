@@ -1,0 +1,94 @@
+---
+- name: Instalando Docker e Docker Compose no Ubuntu
+  hosts: 127.0.0.1
+  connection: local
+  become: true
+  vars:
+    docker_daemon_config:
+      metrics-addr: "0.0.0.0:9323"
+      experimental: true
+
+  tasks:
+    - name: Instalando aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: true
+
+    - name: Atualizando apt cache
+      apt:
+        update_cache: yes
+
+    - name: Checando dependencias instaladas
+      package:
+        name:
+          - uidmap
+          - curl
+          - git
+          - ca-certificates
+          - apt-transport-https
+          - python3-pip
+          - python3-venv
+          - python3-setuptools
+        state: latest
+        update_cache: true
+
+    - name: Adicionando Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Adicionando repositório Docker para apt sources
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_lsb.codename }} stable
+        state: present
+        update_cache: true
+
+    - name: Update apt e instalando Docker Engine
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: latest
+        update_cache: true
+
+    - name: Checagem se o Docker foi instalado e está rodando
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Configure docker daemon
+      copy:
+        content: "{{ docker_daemon_config | to_json }}\n"
+        dest: /etc/docker/daemon.json
+
+    #- name: Instalando dockerd-rootless-setuptool.sh
+    #  script: /usr/bin/dockerd-rootless-setuptool.sh install --force
+
+    - name: Reiniciando Docker para aplicar /etc/docker_daemon.json
+      command:
+        cmd: systemctl restart docker
+
+    - name: Deploy das aplicações Docker Compose
+      community.docker.docker_compose_v2:
+        project_src: ./
+        state: present
+      register: compose_result
+
+    - name: Mostrar o status dos deployments
+      debug:
+        msg: |
+          Deployment complete.
+          Containers: {{ compose_result.containers | length }}
+
+    - name: Curl para http://localhost/projeto-korp
+      command: curl http://localhost:/projeto-korp
+      register: curl_response
+
+    - name: Conteúdo retornado do Curl
+      debug:
+        msg: "{{ curl_response.stdout }}"
